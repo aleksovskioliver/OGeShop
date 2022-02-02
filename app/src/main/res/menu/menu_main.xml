@@ -1,0 +1,41 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.ogeshop.MainActivity">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/actionHome"
+            android:icon="@drawable/ic_baseline_attach_money_24"
+            android:orderInCategory="100"
+            android:title="Home"
+            app:showAsAction="never" />
+    <item
+        android:id="@+id/actionBooks"
+        android:icon="@drawable/ic_baseline_attach_money_24"
+        android:orderInCategory="100"
+        android:title="Books"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/actionMovies"
+        android:icon="@drawable/ic_baseline_attach_money_24"
+        android:orderInCategory="100"
+        android:title="Movies"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/actionCDs"
+        android:icon="@drawable/ic_baseline_attach_money_24"
+        android:orderInCategory="100"
+        android:title="CD's"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_settings5"
+        android:icon="@drawable/ic_baseline_attach_money_24"
+        android:orderInCategory="100"
+        android:title="@string/action_settings"
+        app:showAsAction="never" />
+    </group>
+</menu>

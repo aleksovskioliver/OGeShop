@@ -1,5 +1,6 @@
 package com.example.ogeshop
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Layout
 import android.util.Log.d
@@ -49,14 +50,14 @@ class MainActivity : AppCompatActivity() {
                 R.id.actionHome ->{
                     supportFragmentManager
                         .beginTransaction()
-                        .replace(R.id.frameLayout,MainFragment())
+                        .replace(R.id.nav_host_fragment_content_main,FirstFragment())
                         .commit()
                 }
 
                 R.id.actionBooks -> {
                     supportFragmentManager
                         .beginTransaction()
-                        .replace(R.id.frameLayout,BooksFragment())
+                        .replace(R.id.nav_host_fragment_content_main,BooksFragment())
                         .commit()
                 }
                 R.id.actionCDs -> {

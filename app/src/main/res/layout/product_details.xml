@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    android:padding="16dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
@@ -11,8 +10,7 @@
         android:id="@+id/photo"
         android:layout_width="0dp"
         android:layout_height="300dp"
-        android:src="@drawable/book"
-        android:scaleType="fitCenter"
+        android:scaleType="centerCrop"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>

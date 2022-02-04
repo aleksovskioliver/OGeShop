@@ -5,17 +5,21 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.ogeshop.adapter.CategoriesAdapter
 import com.example.ogeshop.adapter.ProductAdapter
 import com.example.ogeshop.model.Product
-import com.google.android.material.navigation.NavigationView
 
 class FirstFragment : Fragment() {
 
     private lateinit var productRecyclerView: RecyclerView
-    private lateinit var recyclerViewAdapter: ProductAdapter
-
+    private lateinit var productAdapter: ProductAdapter
+    private lateinit var categoriesRecyclerView: RecyclerView
+    private lateinit var categoriesAdapter: CategoriesAdapter
+    private lateinit var root: View
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,14 +33,21 @@ class FirstFragment : Fragment() {
 
 
         val products: MutableList<Product> = initList()
+        val categories = mutableListOf("Books","Movies","CDs")
 
         productRecyclerView = view.findViewById(R.id.recycler_view)
         productRecyclerView.layoutManager = GridLayoutManager(activity,2)
 
-        recyclerViewAdapter = ProductAdapter(products)
-        productRecyclerView.adapter = recyclerViewAdapter
+        productAdapter = ProductAdapter(products)
+        productRecyclerView.adapter = productAdapter
+        val progressBar: ProgressBar = view.findViewById(R.id.progressBar)
+        progressBar.visibility = View.GONE
 
+        categoriesRecyclerView = view.findViewById(R.id.categoriesRecyclerView)
+        categoriesRecyclerView.layoutManager =  LinearLayoutManager(activity,RecyclerView.HORIZONTAL,false)
 
+        categoriesAdapter = CategoriesAdapter(categories)
+        categoriesRecyclerView.adapter = categoriesAdapter
     }
 
     private fun initList(): MutableList<Product> {

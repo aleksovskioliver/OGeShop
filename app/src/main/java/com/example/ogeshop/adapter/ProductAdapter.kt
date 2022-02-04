@@ -31,6 +31,9 @@ class ProductAdapter(val products: MutableList<Product>) : RecyclerView.Adapter<
         view.setOnClickListener{
             val intent = Intent(parent.context,ProductDetails::class.java)
             intent.putExtra("title",products[holder.adapterPosition].title)
+            intent.putExtra("photo_url",products[holder.adapterPosition].photoUrl)
+            intent.putExtra("description",products[holder.adapterPosition].description)
+            intent.putExtra("price",products[holder.adapterPosition].price)
             parent.context.startActivity(intent)
 
         }

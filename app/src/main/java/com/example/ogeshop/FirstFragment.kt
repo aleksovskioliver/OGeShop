@@ -1,6 +1,7 @@
 package com.example.ogeshop
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,9 +10,16 @@ import android.widget.ProgressBar
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Room
 import com.example.ogeshop.adapter.CategoriesAdapter
 import com.example.ogeshop.adapter.ProductAdapter
+import com.example.ogeshop.database.AppDatabase
+import com.example.ogeshop.database.ProductFromDatabase
 import com.example.ogeshop.model.Product
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class FirstFragment : Fragment() {
 
@@ -32,16 +40,33 @@ class FirstFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        val products: MutableList<Product> = initList()
+        //val products: MutableList<Product> = initList()
         val categories = mutableListOf("Books","Movies","CDs")
 
         productRecyclerView = view.findViewById(R.id.recycler_view)
-        productRecyclerView.layoutManager = GridLayoutManager(activity,2)
 
-        productAdapter = ProductAdapter(products)
-        productRecyclerView.adapter = productAdapter
+
+
         val progressBar: ProgressBar = view.findViewById(R.id.progressBar)
-        progressBar.visibility = View.GONE
+        CoroutineScope(Dispatchers.IO).launch {
+
+            val db = Room.databaseBuilder(
+                activity!!.applicationContext,
+                AppDatabase::class.java,"database-name"
+            ).build()
+
+            val productsFromDatabase = db.productDao().getAll()
+            val products = productsFromDatabase.map {
+                Product(it.title,it.photoUrl,it.price,it.description)
+            }.toMutableList()
+
+            withContext(Dispatchers.Main){
+                productRecyclerView.layoutManager = GridLayoutManager(activity,2)
+                productAdapter = ProductAdapter(products)
+                productRecyclerView.adapter = productAdapter
+                progressBar.visibility = View.GONE
+            }
+        }
 
         categoriesRecyclerView = view.findViewById(R.id.categoriesRecyclerView)
         categoriesRecyclerView.layoutManager =  LinearLayoutManager(activity,RecyclerView.HORIZONTAL,false)

@@ -1,25 +1,23 @@
 package com.example.ogeshop
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import android.text.Layout
 import android.util.Log.d
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
-import android.view.Menu
 import android.view.MenuItem
-import android.widget.FrameLayout
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.navigation.NavGraph
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupWithNavController
+import androidx.room.Room
+import com.example.ogeshop.database.AppDatabase
+import com.example.ogeshop.database.ProductFromDatabase
 import com.example.ogeshop.databinding.ActivityMainBinding
 import com.google.android.material.navigation.NavigationView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
 
@@ -39,25 +37,34 @@ class MainActivity : AppCompatActivity() {
         val navigationView: NavigationView = findViewById(R.id.navigationView)
 
 
-//
-//        supportFragmentManager.beginTransaction()
-//            .replace(R.id.frameLayout,MainFragment())
-//            .commit()
+        CoroutineScope(Dispatchers.IO).launch {
 
+            val db = Room.databaseBuilder(
+                applicationContext,
+                AppDatabase::class.java,"database-name"
+            ).build()
+
+            db.productDao().insertAll(ProductFromDatabase(null,"Avatar","https://images-na.ssl-images-amazon.com/images/M/MV5BNzM2MDk3MTcyMV5BMl5BanBnXkFtZTcwNjg0MTUzNA@@._V1_SX1777_CR0,0,1777,999_AL_.jpg",27.33,"A paraplegic marine dispatched to the moon Pandora on a unique mission becomes torn between following his orders and protecting the world he feels is his home."))
+            val products = db.productDao().getAll()
+
+            withContext(Dispatchers.Main){
+                d("test","products size? ${products.size}")
+            }
+        }
 
         navigationView.setNavigationItemSelectedListener {
-            when(it.itemId){
-                R.id.actionHome ->{
+            when (it.itemId) {
+                R.id.actionHome -> {
                     supportFragmentManager
                         .beginTransaction()
-                        .replace(R.id.nav_host_fragment_content_main,FirstFragment())
+                        .replace(R.id.nav_host_fragment_content_main, FirstFragment())
                         .commit()
                 }
 
                 R.id.actionBooks -> {
                     supportFragmentManager
                         .beginTransaction()
-                        .replace(R.id.nav_host_fragment_content_main,BooksFragment())
+                        .replace(R.id.nav_host_fragment_content_main, BooksFragment())
                         .commit()
                 }
                 R.id.actionCDs -> {
@@ -81,19 +88,7 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph)
 
         setupActionBarWithNavController(navController, appBarConfiguration)
-
-//        binding.fab.setOnClickListener { view ->
-//            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                .setAction("Action", null).show()
-//        }
     }
-//
-//
-//    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        menuInflater.inflate(R.menu.menu_main, menu)
-//        return true
-//    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         drawerLayout = findViewById<DrawerLayout>(R.id.drawerLayout)
